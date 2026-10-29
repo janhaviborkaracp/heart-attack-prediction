@@ -1,6 +1,8 @@
 
 import streamlit as st
 import pandas as pd
+import joblib
+from pathlib import Path
 
 st.set_page_config(
     page_title="Heart Disease Prediction Dashboard",
@@ -8,117 +10,141 @@ st.set_page_config(
     layout="wide"
 )
 
-# Page heading
+# ============================================
+# LOAD TRAINED MODEL AND SCALER
+# ============================================
+
+@st.cache_resource
+def load_model_files():
+    model_path = Path(__file__).parent / "heart_disease_model.pkl"
+    scaler_path = Path(__file__).parent / "heart_disease_scaler.pkl"
+
+    model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
+
+    return model, scaler
+
+try:
+    model, scaler = load_model_files()
+    st.success("Prediction model and scaler loaded successfully!")
+except Exception as e:
+    st.error(f"Could not load model files: {e}")
+    st.stop()
+
+# Features must match the training order exactly
+FEATURES = [
+    "Age",
+    "Gender",
+    "Smoking",
+    "BMI",
+    "Heart rate",
+    "blood Oxygen",
+    "body temperature",
+    "Systolic_BP",
+    "Diastolic_BP",
+    "ECG_Raw_ADC_Demo"
+]
+
+if len(FEATURES) != model.n_features_in_:
+    st.error(
+        f"Feature mismatch: model expects "
+        f"{model.n_features_in_} features, "
+        f"but the app provides {len(FEATURES)}."
+    )
+    st.stop()
+
+if hasattr(scaler, "n_features_in_"):
+    if scaler.n_features_in_ != len(FEATURES):
+        st.error("The scaler does not match the 10 input features.")
+        st.stop()
+
+# ============================================
+# PAGE HEADING
+# ============================================
+
 st.title("❤️ Heart Disease Prediction System")
-st.write(
-    "Machine Learning-Based Heart Disease Prediction System"
-)
+st.write("Machine Learning-Based Heart Disease Prediction System")
 
-st.info(
-    "Enter the health parameters below. "
-    "The trained prediction model will be connected separately."
-)
-
-st.divider()
-
-# Sidebar
 st.sidebar.title("About the Project")
 st.sidebar.write(
-    "An academic project exploring machine learning "
-    "and health measurements."
+    "An academic project using Random Forest "
+    "and patient health parameters."
 )
-
 st.sidebar.caption(
     "Experimental prototype — not a medical diagnosis."
 )
 
-# Input form
+st.divider()
 st.subheader("Enter Health Parameters")
 
-with st.form("health_form"):
+# ============================================
+# INPUT FORM
+# ============================================
 
+with st.form("health_form"):
     col1, col2 = st.columns(2)
 
     with col1:
         age = st.number_input(
-            "Age (years)",
-            min_value=1,
-            max_value=120,
-            value=25
+            "Age (years)", 1, 120, 25
         )
 
         gender = st.selectbox(
-            "Gender",
-            ["Female", "Male"]
+            "Gender", ["Female", "Male"]
         )
 
         smoking = st.selectbox(
-            "Smoking Status",
-            ["No", "Yes"]
+            "Smoking Status", ["No", "Yes"]
         )
 
         bmi = st.number_input(
-            "BMI",
-            min_value=1.0,
-            max_value=100.0,
-            value=22.0
+            "BMI", 1.0, 100.0, 22.0
         )
 
         heart_rate = st.number_input(
-            "Heart Rate (BPM)",
-            min_value=1,
-            max_value=300,
-            value=75
+            "Heart Rate (BPM)", 1, 300, 75
         )
 
     with col2:
         blood_oxygen = st.number_input(
-            "Blood Oxygen (%)",
-            min_value=0.0,
-            max_value=100.0,
-            value=98.0
+            "Blood Oxygen (%)", 0.0, 100.0, 98.0
         )
 
         body_temperature = st.number_input(
-            "Body Temperature (°C)",
-            min_value=25.0,
-            max_value=45.0,
-            value=36.8
+            "Body Temperature (°C)", 25.0, 45.0, 36.8
         )
 
         systolic_bp = st.number_input(
-            "Systolic Blood Pressure",
-            min_value=0,
-            max_value=300,
-            value=120
+            "Systolic Blood Pressure", 0, 300, 120
         )
 
         diastolic_bp = st.number_input(
-            "Diastolic Blood Pressure",
-            min_value=0,
-            max_value=200,
-            value=80
+            "Diastolic Blood Pressure", 0, 200, 80
         )
 
         ecg_reading = st.number_input(
-            "ECG Raw ADC Reading",
-            min_value=0,
-            value=500
+            "ECG Raw ADC Reading", 0, value=500
         )
 
     submitted = st.form_submit_button(
-        "Submit Health Parameters",
+        "Predict Heart Disease",
         type="primary",
         use_container_width=True
     )
 
+# ============================================
+# PREDICTION
+# ============================================
+
 if submitted:
-    st.subheader("Entered Health Parameters")
+    # Match the encoding used during training:
+    # Male = 0, Female = 1
+    # No smoking = 0, Yes smoking = 1
 
     input_data = pd.DataFrame([{
         "Age": age,
-        "Gender": gender,
-        "Smoking": smoking,
+        "Gender": 1 if gender == "Female" else 0,
+        "Smoking": 1 if smoking == "Yes" else 0,
         "BMI": bmi,
         "Heart rate": heart_rate,
         "blood Oxygen": blood_oxygen,
@@ -126,19 +152,37 @@ if submitted:
         "Systolic_BP": systolic_bp,
         "Diastolic_BP": diastolic_bp,
         "ECG_Raw_ADC_Demo": ecg_reading
-    }])
+    }], columns=FEATURES)
 
-    st.dataframe(input_data, use_container_width=True)
+    try:
+        # Apply the SAME fitted scaler used during training
+        scaled_input = scaler.transform(input_data)
 
-    st.warning(
-        "Your inputs have been recorded in this session. "
-        "A genuine prediction cannot be displayed until "
-        "the trained model is connected."
-    )
+        # Predict using the trained model
+        prediction = int(model.predict(scaled_input)[0])
 
-st.divider()
+        st.divider()
+        st.subheader("Prediction Result")
 
-st.caption(
-    "Academic prototype only. This application does not "
-    "provide a validated heart attack diagnosis."
-)
+        if prediction == 1:
+            st.warning(
+                "Model prediction: HeartProblem = 1 "
+                "(positive class)"
+            )
+        else:
+            st.success(
+                "Model prediction: HeartProblem = 0 "
+                "(negative class)"
+            )
+
+        st.caption(
+            "This is a machine-learning classification result, "
+            "not a confirmed diagnosis. Seek professional medical "
+            "assessment for health concerns."
+        )
+
+        with st.expander("View input values used for prediction"):
+            st.dataframe(input_data, use_container_width=True)
+
+    except Exception as e:
+        st.error(f"Prediction failed: {e}")
