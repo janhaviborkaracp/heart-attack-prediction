@@ -1,11 +1,15 @@
+
 [project]
-name = "blank-app-template"
+name = "heart-attack-prediction"
 version = "0.1.0"
-description = "A simple Streamlit app template."
+description = "Heart Disease Prediction Streamlit App"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "streamlit>=1.61.1",
+    "pandas",
+    "scikit-learn",
+    "joblib",
 ]
 
 [tool.uv]
