@@ -3,15 +3,15 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(
-    page_title="Heart Health Dashboard",
+    page_title="Heart Disease Prediction Dashboard",
     page_icon="❤️",
     layout="wide"
 )
 
 # Page heading
-st.title("❤️ Heart Attack Prediction System")
+st.title("❤️ Heart Disease Prediction System")
 st.write(
-    "Machine Learning-Based Heart Health Monitoring Dashboard"
+    "Machine Learning-Based Heart Disease Prediction System"
 )
 
 st.info(
