@@ -73,7 +73,7 @@ if hasattr(scaler, "n_features_in_"):
 st.title("❤️ Heart Disease Prediction System")
 
 st.write(
-    "### Machine Learning-Based Health Prediction Dashboard"
+    "### Machine Learning-Based Heart Health Prediction System"
 )
 
 st.markdown(
@@ -301,32 +301,32 @@ if submitted:
         # MODEL CLASS PROBABILITY
         # ------------------------------------
 
-        if hasattr(model, "predict_proba"):
+       # if hasattr(model, "predict_proba"):
 
-            probabilities = model.predict_proba(scaled_input)[0]
-            classes = list(model.classes_)
+        #    probabilities = model.predict_proba(scaled_input)[0]
+         #   classes = list(model.classes_)
 
-            if 1 in classes:
+          #  if 1 in classes:
 
-                positive_probability = float(
-                    probabilities[classes.index(1)]
-                )
+           #     positive_probability = float(
+            #        probabilities[classes.index(1)]
+             #   )
 
-                st.subheader("📊 Model Probability")
+              #  st.subheader("📊 Model Probability")
 
-                st.progress(positive_probability)
+               # st.progress(positive_probability)
 
-                st.markdown(
-                    f"**Estimated probability for class 1:** "
-                    f"{positive_probability:.1%}"
-                )
+                #st.markdown(
+                 #   f"**Estimated probability for class 1:** "
+                  #  f"{positive_probability:.1%}"
+               # )
 
-                st.caption(
-                    "This value represents the model's estimated "
-                    "probability for class 1. It is not a clinically "
-                    "validated estimate of an individual's heart "
-                    "disease risk."
-                )
+                #st.caption(
+                 #   "This value represents the model's estimated "
+                  #  "probability for class 1. It is not a clinically "
+                 #   "validated estimate of an individual's heart "
+                 #   "disease risk."
+             #   )
 
         # ------------------------------------
         # INPUT SUMMARY
