@@ -232,7 +232,7 @@ if submitted:
         prediction = int(model.predict(scaled_input)[0])
 
         st.divider()
-        st.subheader("❤️ Prediction Results")
+        st.subheader("📊 Prediction Results")
 
         # ------------------------------------
         # NEGATIVE PREDICTION
@@ -271,7 +271,7 @@ if submitted:
 
         else:
 
-            st.warning("❤️ Heart Disease Indicated")
+            st.warning("⚠️ Heart Disease Indicated")
 
             st.markdown(
                 """
