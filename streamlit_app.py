@@ -73,7 +73,7 @@ if hasattr(scaler, "n_features_in_"):
 st.title("❤️ Heart Disease Prediction System")
 
 st.write(
-    "### Machine Learning-Based Heart Health Prediction System"
+    "### Machine Learning-Based Heart Disease Prediction System"
 )
 
 st.markdown(
