@@ -87,7 +87,7 @@ st.markdown(
 # SIDEBAR
 # ============================================
 
-st.sidebar.title("❤️ About the Project")
+st.sidebar.title("📌 About the Project")
 
 st.sidebar.write(
     """
