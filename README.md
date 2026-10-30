@@ -1,25 +1,153 @@
-# 🎈 Blank app template
+# ❤️ Heart Disease Prediction System Using Machine Learning
 
-A simple Streamlit app template for you to modify!
+## 📌 Project Overview
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+The **Heart Disease Prediction System** is an academic project that uses Machine Learning to predict the possibility of heart disease based on patient health parameters.
 
-### How to run it on your own machine
+The system uses a **Random Forest Classifier** trained on a patient dataset. It accepts health-related inputs through an interactive web interface and generates a binary prediction indicating whether heart disease is predicted or not.
 
-Prerequisite: install `uv` if you don't already have it.
+The project also displays the model's estimated probability for the positive class and uses a web-based dashboard to present the results.
 
+## 🎯 Objectives
+
+- Develop a Machine Learning model for heart disease prediction.
+- Analyse patient health parameters using a Random Forest algorithm.
+- Integrate the trained model with a web-based interface.
+- Generate predictions using user-provided health information.
+- Display prediction results in an interactive dashboard.
+
+## ⚙️ Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| Python | Programming language |
+| Google Colab | Data preprocessing and model training |
+| Pandas | Data handling and manipulation |
+| NumPy | Numerical operations |
+| Scikit-learn | Machine Learning and feature scaling |
+| Random Forest | Classification algorithm |
+| Joblib | Saving and loading trained model files |
+| Streamlit | Web interface development |
+| GitHub | Source code and project file management |
+| Streamlit Community Cloud | Web application deployment |
+
+## 📊 Input Parameters
+
+The system uses the following 10 patient health parameters:
+
+1. Age
+2. Gender
+3. Smoking Status
+4. Body Mass Index (BMI)
+5. Heart Rate
+6. Blood Oxygen Level
+7. Body Temperature
+8. Systolic Blood Pressure
+9. Diastolic Blood Pressure
+10. ECG Raw ADC Reading
+
+## 🧠 Machine Learning Model
+
+The project uses a **Random Forest Classifier**, an ensemble learning algorithm that combines multiple decision trees to perform classification.
+
+The dataset is preprocessed, divided into training and testing sets, and scaled using StandardScaler.
+
+The trained model and fitted scaler are saved as `.pkl` files using Joblib and loaded into the Streamlit application.
+
+### Prediction Output
+
+- **Class 0:** No heart disease predicted.
+- **Class 1:** Heart disease indicated.
+
+The application also displays the model-estimated probability for class 1.
+
+## 🌐 Web Application Features
+
+- Interactive dashboard developed using Streamlit.
+- Input form for entering patient health parameters.
+- Automatic categorical encoding and feature scaling.
+- Real-time prediction using the trained Random Forest model.
+- Separate result displays for positive and negative predictions.
+- Model probability visualization.
+- Expandable section to review entered patient parameters.
+
+## 🔄 System Workflow
+
+1. Collect and preprocess the patient dataset.
+2. Split the dataset into training and testing sets.
+3. Apply feature scaling using StandardScaler.
+4. Train the Random Forest classification model.
+5. Save the trained model and scaler as `.pkl` files.
+6. Develop the web interface using Streamlit.
+7. Load the saved model and scaler into the application.
+8. Accept patient health parameters through the interface.
+9. Preprocess the inputs and generate predictions.
+10. Display the prediction and estimated class probability.
+
+## 📁 Project Structure
+
+```text
+heart-attack-prediction/
+│
+├── streamlit_app.py
+├── heart_disease_model.pkl
+├── heart_disease_scaler.pkl
+├── requirements.txt
+└── README.md
 ```
-$ curl -LsSf https://astral.sh/uv/install.sh | sh
+
+## 🚀 Run the Application Locally
+
+**Step 1: Clone the repository**
+
+```bash
+git clone https://github.com/janhaviborkaracp/heart-attack-prediction.git
 ```
 
-1. Sync the dependencies
+**Step 2: Open the project folder**
 
-   ```
-   $ uv sync
-   ```
+```bash
+cd heart-attack-prediction
+```
 
-2. Run the app
+**Step 3: Install the required dependencies**
 
-   ```
-   $ uv run streamlit run streamlit_app.py
-   ```
+```bash
+pip install -r requirements.txt
+```
+
+**Step 4: Run the Streamlit application**
+
+```bash
+streamlit run streamlit_app.py
+```
+
+The application will open in your web browser.
+
+## ☁️ Deployment
+
+The application is deployed using **Streamlit Community Cloud**.
+
+GitHub is used to store the project files, while Streamlit Community Cloud accesses the repository, installs the required dependencies and hosts the web application.
+
+**Live Application:**  
+https://heart-attack-prediction-3hzjyt3fqlx.streamlit.app/
+
+**GitHub Repository:**  
+https://github.com/janhaviborkaracp/heart-attack-prediction
+
+## ⚠️ Disclaimer
+
+This project is developed for academic and educational purposes only. The predictions generated by the Machine Learning model are experimental and should not be considered medical diagnoses or clinically validated assessments of heart disease risk.
+
+Consult a qualified healthcare professional for medical advice and evaluation.
+
+## 👩‍💻 Project Information
+
+**Project Title:** IoT-Based Heart Disease Prediction System Using Explainable AI-Driven Machine Learning Model
+
+**Machine Learning Algorithm:** Random Forest Classifier
+
+**Web Framework:** Streamlit
+
+**Deployment Platform:** Streamlit Community Cloud
