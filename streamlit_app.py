@@ -4,6 +4,18 @@ import pandas as pd
 import joblib
 from pathlib import Path
 
+import streamlit as st
+
+st.title("Heart Disease Prediction System")
+
+# Patient Details
+st.subheader("Patient Details")
+
+patient_name = st.text_input(
+    "Enter Patient Name",
+    placeholder="Enter full name"
+)
+
 # ============================================
 # PAGE CONFIGURATION
 # ============================================
@@ -297,6 +309,17 @@ if submitted:
                 unsafe_allow_html=True
             )
 
+        if st.button("Submit Details"):
+
+    if patient_name.strip():
+
+        st.success("Patient details entered successfully!")
+
+        st.write("Patient Name:", patient_name)
+        st.write("Date:", patient_date)
+
+    else:
+        st.warning("Please enter patient name.")
         # ------------------------------------
         # MODEL CLASS PROBABILITY
         # ------------------------------------
